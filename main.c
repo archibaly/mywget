@@ -52,13 +52,14 @@ int main(int argc, char **argv)
 	fwrite(buff + offset, sizeof(char), n - offset, fp);
 
 	for (;;) {
-		fwrite(buff, sizeof(char), n, fp);
 		n = socket_recv(sockfd, buff, sizeof(buff));
-		if (n < 0) {
-			perror("socket_recv()");
-			return -1;
+		if (n > 0) {
+			fwrite(buff, sizeof(char), n, fp);
 		} else if (n == 0) {	/* receive done */
 			break;
+		} else {
+			perror("socket_recv()");
+			return -1;
 		}
 	}
 	fclose(fp);
