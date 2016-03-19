@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 
 	int sockfd;
 	int port = url->port == NULL ? 80 : atoi(url->port);
-	if ((sockfd = socket_connect(url->host, port)) < 0) {
+	if ((sockfd = socket_connect(url->host, url->host_type, port)) < 0) {
 		perror("socket_connect()");
 		return -1;
 	}

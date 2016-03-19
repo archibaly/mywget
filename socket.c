@@ -31,30 +31,25 @@ int get_ip(const char *hostname, char *ip)
 	return 0;
 }
 
-static int is_ip(const char *str)
-{
-	if (strncmp(str, "www.", strlen("www.")) == 0)
-		return 0;	/* is hostname */
-	return 1;
-}
-
 /**
  * socket_connect - connect to tcp server
  * @host: hostname or ip of the server
  */
-int socket_connect(const char *host, uint16_t port)
+int socket_connect(const char *host, host_type_t type, uint16_t port)
 {
 	char ip[INET_ADDRSTRLEN];
 	int sockfd;
 	struct sockaddr_in server_addr;
 
 	memset(ip, 0, INET_ADDRSTRLEN);
-	if (is_ip(host)) {
+	if (type == HOST_IPV4) {
 		memcpy(ip, host, strlen(host));
-	} else {
+	} else if (type == HOST_DOMAIN) {
 		if (get_ip(host, ip) < 0) {
 			return -1;
 		}
+	} else {
+		return -1;
 	}
 
 	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)

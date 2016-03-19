@@ -5,7 +5,7 @@
 
 static char *str_hosttype[] = { "host ipv4", "host ipv6", "host domain", NULL };
 
-static int host_is_ipv4(char *str)
+int host_is_ipv4(char *str)
 {
    if (!str) return 0;
    while (*str)
